@@ -1,10 +1,8 @@
 class Cat < ApplicationRecord
     CAT_COLORS = ["Black", "White", "Gray", "Orange", "Calico"].freeze
-    validates :name, presence: true
+    validates :name, :description, presence: true
     validates :color, presence: true, inclusion: { in: CAT_COLORS, message: "is not a valid color" }
     validates :sex, presence: true, inclusion: { in: ["M", "F"], message: "must be 'M' or 'F'" }
-    validates :description, presence: true
-    validates :timestamps, presence: true
 
     def birth_date_cannot_be_future
         if birth_date.present? && birth_date > Date.today
@@ -38,4 +36,14 @@ class Cat < ApplicationRecord
   validate :age
 
 
+end
+
+def time_ago_in_words(date)
+  day = date.day
+  month = date.month
+  year = date.year
+
+  total_days = Date.today - day.days - month.months - year.years
+  remainder_days = total_days % 365
+  return (total_days - remainder_days) / 365
 end
